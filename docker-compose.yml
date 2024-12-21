@@ -1,58 +1,39 @@
-version: '3.7'
+version: '3.8'
 
 services:
-  postgres:
-    image: postgres:16
-    container_name: challenge_postgres
+  frontend:
+    build:
+      context: ./challenge-front
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: challenge-db
-      POSTGRES_HOST_AUTH_METHOD: trust
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    networks:
-      - app_network
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-      start_period: 10s
+      - REACT_APP_API_URL=http://backend:3001
 
   backend:
     build:
       context: ./challenge-back
-    container_name: challenge_back
+      dockerfile: Dockerfile
+    ports:
+      - "3001:3001"
+    depends_on:
+      - db
     environment:
-      DB_HOST: postgres
-      DB_USER: postgres
-      DB_PASSWORD: postgres
-      DB_NAME: challenge-db
-    ports:
-      - "3000:3000"
-    depends_on:
-      postgres:
-        condition: service_healthy
-    restart: unless-stopped
-    networks:
-      - app_network
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/challenge_db
+      - NODE_ENV=production
 
-  frontend:
-    build:
-      context: ./challenge-front
-    container_name: challenge_front
+  db:
+    image: postgres:14-alpine
     ports:
-      - "80:80"
-    depends_on:
-      - backend
-    networks:
-      - app_network
-
-networks:
-  app_network:
-    driver: bridge
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=challenge_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
 
 volumes:
   postgres_data:
-    driver: local
