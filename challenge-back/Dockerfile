@@ -14,10 +14,10 @@ RUN npm install
 COPY . .
 
 # Указываем переменную окружения для базы данных
-ENV DB_HOST=postgres
-ENV DB_USER=your_user_name
-ENV DB_PASSWORD=your_password
-ENV DB_NAME=your_database_name
+ENV DB_HOST=161.35.29.112
+ENV DB_USER=postgres
+ENV DB_PASSWORD=postgres
+ENV DB_NAME=challenge-db
 
 # Открываем порт для приложения
 EXPOSE 3000
