@@ -6,12 +6,12 @@ services:
       context: ./challenge-front
       dockerfile: Dockerfile
     ports:
-      - "3000:3000"
+      - "80:80"
     volumes:
       - ./challenge-front:/app
       - /app/node_modules
     environment:
-      - VITE_API_URL=http://localhost:3001
+      - VITE_API_URL=http://localhost:3000/api
     depends_on:
       - backend
 
@@ -20,7 +20,7 @@ services:
       context: ./challenge-back
       dockerfile: Dockerfile
     ports:
-      - "3001:3001"
+      - "3000:3000"
     volumes:
       - ./challenge-back:/app
       - /app/node_modules
