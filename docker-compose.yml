@@ -15,8 +15,8 @@ services:
 
   backend:
     build:
-      context: ./challenge-backend
-    container_name: challenge_backend
+      context: ./challenge-back
+    container_name: challenge_back
     environment:
       DB_HOST: postgres
       DB_USER: your_user_name
