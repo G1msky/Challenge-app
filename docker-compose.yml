@@ -1,6 +1,7 @@
 version: '3.7'
 
 services:
+  # Сервис для базы данных PostgreSQL
   postgres:
     image: postgres:16
     container_name: challenge_postgres
@@ -12,7 +13,10 @@ services:
       - postgres_data:/var/lib/postgresql/data
     networks:
       - app_network
+    ports:
+      - "5432:5432"  # Открываем порт для подключения к базе данных из внешних источников
 
+  # Сервис для бэкенда
   backend:
     build:
       context: ./challenge-back
@@ -22,23 +26,34 @@ services:
       DB_USER: postgres
       DB_PASSWORD: postgres
       DB_NAME: challenge-db
+      # Используем переменную для безопасного хранения порта
+      DB_PORT: 5432
     ports:
-      - "3000:3000"
+      - "3000:3000"  # Открываем порт для доступа к API
     depends_on:
-      - postgres
+      - postgres  # Зависит от сервиса базы данных
     networks:
       - app_network
+    working_dir: /usr/src/app
+    command: ["npm", "run", "start"]  # Обратите внимание, что у вас должна быть команда запуска
+    volumes:
+      - ./challenge-back:/usr/src/app  # Монтируем директорию для горячей перезагрузки
 
+  # Сервис для фронтенда
   frontend:
     build:
       context: ./challenge-front
     container_name: challenge_front
     ports:
-      - "80:80"
+      - "80:80"  # Открываем порт для фронтенда
     depends_on:
-      - backend
+      - backend  # Зависит от бэкенда
     networks:
       - app_network
+    working_dir: /usr/src/app
+    volumes:
+      - ./challenge-front:/usr/src/app  # Монтируем фронтенд для горячей перезагрузки
+    command: ["npm", "run", "dev"]  # Если это Vue приложение, используйте нужную команду
 
 networks:
   app_network:
