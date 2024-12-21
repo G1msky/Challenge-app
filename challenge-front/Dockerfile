@@ -1,4 +1,4 @@
-FROM node:20-alpine as builder
+FROM node:20-alpine AS builder
 
 WORKDIR /app
 
@@ -10,14 +10,12 @@ COPY . .
 
 RUN npm run build
 
-FROM node:20-alpine
+FROM nginx:alpine
 
-WORKDIR /app
-
-COPY --from=builder /app/build ./build
-COPY --from=builder /app/package*.json ./
-COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/dist /usr/share/nginx/html
 
 EXPOSE 3000
 
-CMD ["npm", "run", "start"]
+RUN sed -i 's/80/3000/g' /etc/nginx/conf.d/default.conf
+
+CMD ["nginx", "-g", "daemon off;"]
