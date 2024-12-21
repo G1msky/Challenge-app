@@ -5,39 +5,31 @@ services:
     build:
       context: ./challenge-front
       dockerfile: Dockerfile
-      cache_from:
-        - frontend:latest
     ports:
       - "3000:3000"
+    volumes:
+      - ./challenge-front:/app
+      - /app/node_modules
+    environment:
+      - VITE_API_URL=http://localhost:3001
     depends_on:
       - backend
-    environment:
-      - REACT_APP_API_URL=http://backend:3001
-    healthcheck:
-      test: ["CMD", "wget", "--spider", "http://localhost:3000"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
 
   backend:
     build:
       context: ./challenge-back
       dockerfile: Dockerfile
-      cache_from:
-        - backend:latest
     ports:
       - "3001:3001"
+    volumes:
+      - ./challenge-back:/app
+      - /app/node_modules
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/challenge_db
+      - NODE_ENV=development
     depends_on:
       db:
         condition: service_healthy
-    environment:
-      - DATABASE_URL=postgresql://postgres:postgres@db:5432/challenge_db
-      - NODE_ENV=production
-    healthcheck:
-      test: ["CMD", "wget", "--spider", "http://localhost:3001/health"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
 
   db:
     image: postgres:16-alpine

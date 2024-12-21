@@ -14,10 +14,10 @@
     "dialect": "postgres"
   },
   "production": {
-    "username": "root",
-    "password": null,
-    "database": "database_production",
-    "host": "localhost",
+    "username": "postgres",
+    "password": "postgres",
+    "database": "challenge-db",
+    "host": "db",
     "dialect": "postgres"
   }
 }
