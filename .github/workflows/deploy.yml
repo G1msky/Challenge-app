@@ -43,4 +43,4 @@ jobs:
 
     - name: Deploy to server
       run: |
-        ssh root@161.35.29.112 "cd Challenge-app && git pull && docker-compose -f docker-compose.yml up -d --build"
+        ssh root@161.35.29.112 "cd Challenge-app && git pull && docker-compose down && docker-compose -f docker-compose.yml up -d --build"
