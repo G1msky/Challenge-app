@@ -9,8 +9,6 @@ RUN npm install
 
 COPY . .
 
-# Выполнение миграций
-RUN npx sequelize-cli db:migrate
 
 EXPOSE 3000
 
