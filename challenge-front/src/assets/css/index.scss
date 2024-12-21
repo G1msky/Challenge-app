@@ -1,0 +1,13 @@
+@use "./header";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.error-message {
+  @apply text-[12px];
+}
+
+h1 {
+  @apply text-[32px] sm:text-[46px] xl:text-[64px] font-bold text-center py-4 sm:py-6 xl:py-8;
+}
