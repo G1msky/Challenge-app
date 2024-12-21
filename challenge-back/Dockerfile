@@ -14,7 +14,7 @@ RUN npm install
 COPY . .
 
 # Указываем переменную окружения для базы данных
-ENV DB_HOST=161.35.29.112
+ENV DB_HOST=postgres
 ENV DB_USER=postgres
 ENV DB_PASSWORD=postgres
 ENV DB_NAME=challenge-db
