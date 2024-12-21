@@ -1,7 +1,7 @@
 const { Sequelize } = require("sequelize");
 const config = require("./config/config.json");
 // Подключение к базе данных
-const db = new Sequelize(config.development);
+const db = new Sequelize(config.production);
 
 (async () => {
   try {
