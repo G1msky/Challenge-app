@@ -12,7 +12,7 @@ const tasksRouter = require("./routes/tasks");
 var app = express();
 
 // view engine setup
-app.use(cors({ origin: "http://localhost:8080" }));
+app.use(cors({ origin: "http://161.35.29.112" }));
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "jade");
 
