@@ -1,0 +1,49 @@
+version: '3.7'
+
+services:
+  postgres:
+    image: postgres:16
+    container_name: challenge_postgres
+    environment:
+      POSTGRES_USER: your_user_name
+      POSTGRES_PASSWORD: your_password
+      POSTGRES_DB: your_database_name
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - app_network
+
+  backend:
+    build:
+      context: ./challenge-backend
+    container_name: challenge_backend
+    environment:
+      DB_HOST: postgres
+      DB_USER: your_user_name
+      DB_PASSWORD: your_password
+      DB_NAME: your_database_name
+    ports:
+      - "3000:3000"
+    depends_on:
+      - postgres
+    networks:
+      - app_network
+
+  frontend:
+    build:
+      context: ./challenge-front
+    container_name: challenge_front
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    networks:
+      - app_network
+
+networks:
+  app_network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+    driver: local
