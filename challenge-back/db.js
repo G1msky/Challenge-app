@@ -5,6 +5,9 @@ const db = new Sequelize(config.production);
 
 (async () => {
   try {
+    // Задержка перед подключением
+    await new Promise(resolve => setTimeout(resolve, 5000));
+    
     await db.authenticate();
     console.log(
       "Connection to the database has been established successfully."
