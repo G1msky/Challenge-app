@@ -1,14 +1,14 @@
 {
   "development": {
     "username": "postgres",
-    "password": "1234",
+    "password": "postgres",
     "database": "challenge-db",
     "host": "localhost",
     "dialect": "postgres"
   },
   "test": {
     "username": "postgres",
-    "password": "1234",
+    "password": "postgres",
     "database": "challenge-db",
     "host": "localhost",
     "dialect": "postgres"
