@@ -9,10 +9,11 @@ var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
 const challengeRouter = require("./routes/challenges");
 const tasksRouter = require("./routes/tasks");
+const { env } = require("process");
 var app = express();
 
 // view engine setup
-app.use(cors({ origin: "http://161.35.29.112" }));
+app.use(cors({ origin: env.environment === "production" ? "http://161.35.29.112" : "http://localhost:8080"  }));
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "jade");
 
