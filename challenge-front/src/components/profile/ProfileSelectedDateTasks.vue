@@ -56,6 +56,15 @@ const closeDrawer = () => {
   selectedTask.value = null;
 };
 
+const updateSelectedTask = async () => {
+  const updatedTask = sortedSelectedDateTasks.value.find(
+    (t) => t.completionId === selectedTask.value.completionId
+  );
+  if (updatedTask) {
+    selectedTask.value = updatedTask;
+  }
+};
+
 watch(selectedDate, () => {
   nextTick(() => {
     setTimeout(() => {

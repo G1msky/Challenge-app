@@ -29,7 +29,7 @@
       <button
         v-if="
           task?.date.split('T')[0] <= new Date().toLocaleDateString('en-CA') &&
-          !task?.completed
+          !taskIsCompleted
         "
         @click="handleComplete(task?.completionId, task?.date)"
         type="button"
@@ -38,7 +38,7 @@
         Complete
       </button>
       <button
-        v-else-if="task?.completed"
+        v-else-if="taskIsCompleted"
         @click="handleNotComplete(task?.completionId, task?.date)"
         type="button"
         class="btn btn-primary"
@@ -50,14 +50,14 @@
 </template>
 
 <script setup>
-import { defineProps, defineEmits } from "vue";
+import { defineProps, defineEmits, computed } from "vue";
 import { useTasks } from "@/composables/tasks";
 
 const { setCompleteTask } = useTasks();
 
 const emit = defineEmits(["taskUpdated"]);
 
-defineProps({
+const props = defineProps({
   id: {
     type: String,
     default: "",
@@ -68,13 +68,24 @@ defineProps({
   },
 });
 
+const taskIsCompleted = computed(() => {
+  return props.task?.completed;
+});
+
 const handleComplete = async (completionId) => {
   await setCompleteTask(completionId);
   emit("taskUpdated");
+  setTimeout(() => {
+    window.HSStaticMethods.autoInit();
+  }, 500);
 };
 
 const handleNotComplete = async (completionId) => {
   await setCompleteTask(completionId, false);
+
   emit("taskUpdated");
+  setTimeout(() => {
+    window.HSStaticMethods.autoInit();
+  }, 500);
 };
 </script>
